@@ -29,7 +29,7 @@ namespace CLASS
    Количество исполнителей – 1.
 */
 {
-    class Staff
+    public class Staff
     {
         string _name;
         string _lastName;
@@ -65,7 +65,7 @@ namespace CLASS
             _address = "Ф";
             _dateofbirth = new DateTime(1111, 11, 11);
             _position = "Администратор";
-            _salary = 255000;
+            _salary = 25;
         }
 
         public string Name
@@ -112,7 +112,7 @@ namespace CLASS
         public DateTime Dateofbirth
         {
             get { return _dateofbirth; }
-            private set { _dateofbirth = value; }
+            set { _dateofbirth = value; }
         }
 
         public string Position
@@ -124,13 +124,13 @@ namespace CLASS
         public decimal Salary
         {
             get { return _salary; }
-            set { _salary = value; }
+            private set { _salary = value; }
         }
 
         public Transfer[] Transfers
         {
             get { return _transfers; }
-            private set { _transfers = value; }
+            set { _transfers = value; }
         }
 
         /// <summary>
@@ -138,15 +138,46 @@ namespace CLASS
         /// public void IncreaseSalary(int increase) (параметр - это как раз сумма, на которую нужно увеличить)
         /// </summary>
         /// <param name="increase"></param>
-        public void IncreaseSalary(int increase)
+        public int IncreaseSalary(int increase)
         {
             Salary = Salary + increase;
+            return increase;
+        }
+
+        public int CalculateAgeBetweenDates(DateTime today, DateTime dateofbirth)
+        {
+            int age = today.Year - dateofbirth.Year;
+            if (dateofbirth.Month < today.Month)
+            {
+                age--;
+            }
+            else if (dateofbirth.Month == today.Month)
+            {
+                if (dateofbirth.Day > today.Day)
+                {
+                    age--;
+                }
+                else
+                {
+                    return age;
+                }
+            }
+            else
+            {
+                return age;
+            }
+            
+            return age;
         }
 
         public int CalculateAge()
         {
-            var t = DateTime.Today - Dateofbirth;
-            return (int)(t.TotalDays / 365);
+            DateTime dateofbirth = Dateofbirth;
+            DateTime today = DateTime.Now;
+            int age = CalculateAgeBetweenDates (dateofbirth, today);
+            return age; 
+           //var  t = DateTime.Today - Dateofbirth;
+           // return (int)(t.TotalDays / 365);
         }
         //Метод AddTransfer: Этот метод добавляет новую информацию о переводе в массив _transfers.
         //Он принимает объект Transfer в качестве параметра и добавляет его в массив
@@ -165,7 +196,21 @@ namespace CLASS
         }
         public string GetDescription()
         {
-            return $"Сотрудник: {LastName} {Name} {Patronymic}, Должность: {Position}, Зарплата: {Salary}";
+            if(Patronymic == "")
+            {
+                return $"Сотрудник: {LastName} {Name}, {Dateofbirth.ToString("d")} г. р., Должность: {Position}, Зарплата: {Salary}";
+            }
+            else
+            {
+                return $"Сотрудник: {LastName} {Name} {Patronymic}, {Dateofbirth.ToString("d")} г. р., Должность: {Position}, Зарплата: {Salary}";
+
+            }
+
+
+           
+               
+           
+           
         }
 
         //Метод Retire: Этот метод устанавливает статус сотрудника как "на пенсии" и устанавливает его зарплату на 0.
@@ -177,7 +222,7 @@ namespace CLASS
     }
 
 
-    class Transfer
+    public class Transfer
     {
         string _position;
         string _reasonfForTransfer;
@@ -245,7 +290,7 @@ namespace CLASS
         }
     }
 
-    class Master
+    public class Master
     {
         string _lastName;
         Specialization[] _specialization;
@@ -293,7 +338,7 @@ namespace CLASS
             set { _listOfMaterials = value; }
         }
     }
-    class ListOfMaterials
+    public class ListOfMaterials
     {
         string _name;
         int _quantity;
@@ -339,7 +384,7 @@ namespace CLASS
         }
     }
 
-    class Specialization
+    public class Specialization
     {
         Master[] Master;
         string _specializations;
@@ -370,7 +415,7 @@ namespace CLASS
         }
     }
 
-    class Customer
+    public class Customer
     {
         string _lastname;
         string _name;
@@ -440,7 +485,7 @@ namespace CLASS
         }
     }
 
-    class Order
+    public class Order
     {
         string _service;
         int _costService;
